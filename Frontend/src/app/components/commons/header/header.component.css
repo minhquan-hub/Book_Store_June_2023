@@ -1,0 +1,26 @@
+.header-inline {
+    display: inline!important
+}
+
+.header {
+    background-color: #051922;
+    height: 100px;
+}
+
+.book-title {
+    color: #F28123;
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.store-title {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.nav-option {
+    color: #fff !important;
+    font-size: 20px;
+    font-weight: 500;
+}

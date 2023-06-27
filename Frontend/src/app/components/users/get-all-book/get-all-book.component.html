@@ -1,0 +1,15 @@
+<div class="container-fluid show-bottom">
+    <div class="row">
+        <div class="col-md-3 d-flex justify-content-center mt-5" *ngFor="let book of books; index as i; first as isFirst" (click)="onShowDetail(book.id)">
+            <div class="card" style="width: 18rem;">
+                <img src={{book.image}} class="card-img-top image-size " alt="...">
+                <div class="card-body product-body">
+                    <h5 class="card-title text-truncate">{{book.title}}</h5>
+                    <p class="card-text text-truncate"><span class="author">Author:</span> {{book.author}} </p>
+                    <p class="price">${{book.price}}</p>
+                    <a routerLink="#" class="btn btn-primary">Add Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

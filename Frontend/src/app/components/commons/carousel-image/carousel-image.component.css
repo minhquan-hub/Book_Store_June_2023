@@ -1,0 +1,13 @@
+.carousel-container {
+    min-width: 2000px;
+}
+
+.height-img {
+    height: 500px;
+}
+
+.carousel-position {
+    margin-top: 150px;
+    margin: 0;
+    width: 100%;
+}
