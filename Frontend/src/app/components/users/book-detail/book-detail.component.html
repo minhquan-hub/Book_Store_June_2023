@@ -1,0 +1,16 @@
+<div class="container book-detail">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{book.image}}" class="img-fluid " alt="">
+        </div>
+        <div class="col-md-6 me-3">
+            <h2>{{book.title}}</h2>
+            <p class="">by {{book.author}}</p>
+            <h3 class="me-3">${{book.price}}</h3>
+            <div class="mt-2 mb-2">
+                <button type="button" class="btn btn-primary">Add to cart</button>
+            </div>
+            <p>Description: {{book.description}}</p>
+        </div>
+    </div>
+</div>
