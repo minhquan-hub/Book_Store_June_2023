@@ -1,10 +1,7 @@
-import express from 'express';
+import express from "express";
 
-import CartController from '../controllers/cart_controller'
+import CartController from "../controllers/cart_controller";
 
-const route = express.Router();
+export const cartRouter = express.Router();
 
-route.post('/', CartController.postCreateCart)
-
-export default route
-
+cartRouter.post("/", CartController.postCreateCart);

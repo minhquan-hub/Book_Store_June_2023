@@ -1,6 +1,6 @@
-import { UserCreateDto } from '../dtos/user/user_create_dto'
-import { IUser } from '../models/User'
+import { UserCreateDto } from "dtos";
+import { IUser } from "models";
 
 export interface IUserService {
-    createUser(userCreateDto: UserCreateDto) : Promise<IUser>;
+  createUser(userCreateDto: UserCreateDto): Promise<IUser>;
 }

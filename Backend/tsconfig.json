@@ -1,47 +1,47 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
+  "compilerOptions": {
+    "module": "commonjs",
 
-        "declaration": true,
+    "declaration": true,
 
-        "removeComments": true,
+    "removeComments": true,
 
-        "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true,
 
-        "experimentalDecorators": true,
+    "experimentalDecorators": true,
 
-        "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true,
 
-        "target": "es2017",
+    "target": "es2017",
 
-        "sourceMap": true,
+    "sourceMap": true,
 
-        "outDir": "./dist",
+    "outDir": "./dist",
 
-        "baseUrl": "./",
+    "baseUrl": "./",
 
-        "incremental": true,
+    "incremental": true,
 
-        "skipLibCheck": true,
+    "skipLibCheck": true,
 
-        "strictNullChecks": false,
+    "strictNullChecks": false,
 
-        "noImplicitAny": false,
+    "noImplicitAny": false,
 
-        "strictBindCallApply": false,
+    "strictBindCallApply": false,
 
-        "forceConsistentCasingInFileNames": false,
+    "forceConsistentCasingInFileNames": false,
 
-        "noFallthroughCasesInSwitch": false,
+    "noFallthroughCasesInSwitch": false,
 
-        "esModuleInterop": true,
+    "esModuleInterop": true,
 
-        "moduleResolution": "node",
+    "moduleResolution": "node",
 
-        "types": ["reflect-metadata"],
-    },
+    "types": ["reflect-metadata"]
+  },
 
-    "ts-node": {
-        "esm": true
-    }
+  "ts-node": {
+    "esm": true
+  }
 }

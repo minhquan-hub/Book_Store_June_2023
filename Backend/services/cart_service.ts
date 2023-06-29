@@ -1,22 +1,20 @@
-import Cart from '../models/Cart'
-import { CartCreateDto } from '../dtos/cart/cart_create_dto'
+import { Cart } from "../models";
+import { CartCreateDto } from "../dtos/cart/cart_create_dto";
 
 class CartService {
+  constructor() {}
 
-    constructor() {}
+  async createCart(cartCreateDto: CartCreateDto) {
+    const newCart = new Cart({
+      userId: cartCreateDto.userId,
+      books: cartCreateDto.book,
+      isDelete: false,
+    });
 
-    async createCart(cartCreateDto: CartCreateDto) {
+    const cart = await newCart.save();
 
-        const newCart = new Cart({
-            userId: cartCreateDto.userId,
-            books: cartCreateDto.book,
-            isDelete: false
-        })
-
-        const cart = await newCart.save()
-
-        return cart
-    }
+    return cart;
+  }
 }
 
-export default new CartService()
+export default new CartService();

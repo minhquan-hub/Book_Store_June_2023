@@ -1,21 +1,30 @@
-import express from 'express'
-import cors from 'cors'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import YAML from "yaml";
+import bodyParser from "body-parser";
+import * as fs from "fs";
+import swaggerUi from "swagger-ui-express";
 
-import CartRoute from './routes/cart_router'
-import AuthRoute from './routes/auth_router'
+import { cartRouter, authRouter, bookRouter, userRouter } from "./routes";
 
 const app = express();
 
-// Middleware 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Router
-app.use('/api/cart', CartRoute)
-app.use('/api/auth', AuthRoute)
+app.use("/api/cart", cartRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/book", bookRouter);
+app.use("/api/user", userRouter);
+
+// Swagger
+const apiDocument = fs.readFileSync("./swagger/openapi.yaml", "utf8");
+const swaggerDocument = YAML.parse(apiDocument);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export default app;

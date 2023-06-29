@@ -1,13 +1,9 @@
-import express from 'express';
-import { AuthController } from '../controllers/auth_controller';
-import { container } from '../container';
+import express from "express";
+import { container } from "../container";
+import { AuthController } from "../controllers";
 
-
-
-const route = express.Router();
+export const authRouter = express.Router();
 
 const authController = container.resolve<AuthController>(AuthController);
 
-route.post('/login', authController.loginUser.bind(authController))
-
-export default route
+authRouter.post("/login", authController.loginUser.bind(authController));

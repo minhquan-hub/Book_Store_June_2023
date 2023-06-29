@@ -1,12 +1,14 @@
-import BaseError from '../base_error';
-import {
-	StatusCodes
-} from 'http-status-codes';
+import BaseError from "../base_error";
 
-class APIError extends BaseError {
-    constructor(name: string, httpCode = StatusCodes.INTERNAL_SERVER_ERROR, isOperational = true, description = 'internal server error') {
-        super(name, httpCode, isOperational, description)
-    }
+export class APIError extends BaseError {
+  constructor(
+    name: string,
+    statusCode = 500,
+    isOperational = true,
+    description = "internal server error"
+  ) {
+    super(name, statusCode, isOperational, description);
+  }
 }
 
 export default APIError;

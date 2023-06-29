@@ -1,178 +1,171 @@
-import { BookCriteriaDto } from "./../dtos/book/book_criteria_dto";
 import { injectable } from "inversify";
-import { BookCreateDto } from "../dtos/book/book_create_dto";
-import { BookUpdateDto } from "../dtos/book/book_update_dto";
-import { IBookService } from "../interfaces/ibook_service";
-import Book, { IBook } from "../models/Book";
-import Http400Error from '../error_handling/errors/http_400_error'
-import APIError from '../error_handling/errors/api_error'
-import { PagedResponseModel } from "../dtos/pagedResponseModel";
-import { mapper } from '../auto_mapper/auto_mapper_profile'
-import { BookDto } from "../dtos/book/book_dto";
+
+import Http400Error from "../error_handling/errors/http_400_error";
+import APIError from "../error_handling/errors/api_error";
+import { mapper } from "../auto_mapper/auto_mapper_profile";
+import {
+  BookCreateDto,
+  BookCriteriaDto,
+  BookDto,
+  BookUpdateDto,
+  PagedResponseModel,
+} from "dtos";
+import { IBookService } from "interfaces";
+import { IBook, Book } from "../models";
 
 @injectable()
 class BookService implements IBookService {
+  constructor() {}
 
-    constructor() {}
+  /**
+   *
+   * @param bookCriteriaDto
+   * @returns
+   *
+   * 0. get input
+   * 1. dpodh
+   * 2/ query
+   * 3. format final result
+   * 4. sned condition
+   */
+  async getBookList(
+    bookCriteriaDto: BookCriteriaDto
+  ): Promise<PagedResponseModel<IBook>> {
+    const searchQuery = bookCriteriaDto.search;
+    const search: any = searchQuery
+      ? { author: { $regex: searchQuery, $options: "msxi" } }
+      : {};
+    const sortColumn = bookCriteriaDto.sortColumn || "title";
+    const sortOrder = bookCriteriaDto.sortOrder * 1 || 1;
+    const limit = bookCriteriaDto.limit || 5;
+    const skip = (bookCriteriaDto.page - 1) * limit;
+    const sort: any = {
+      [sortColumn]: sortOrder,
+    };
 
-    /**
-     * 
-     * @param bookCriteriaDto 
-     * @returns 
-     * 
-     * 0. get input
-     * 1. dpodh
-     * 2/ query
-     * 3. format final result
-     * 4. sned condition
-     */
-    async getBookList(bookCriteriaDto: BookCriteriaDto): Promise<PagedResponseModel<IBook>> {
-       
-            const searchQuery = bookCriteriaDto.search
-            const search: any = searchQuery ? {author : {$regex: searchQuery, $options: 'msxi' }} : {}
-            const sortColumn = bookCriteriaDto.sortColumn || "title"
-            const sortOrder = bookCriteriaDto.sortOrder * 1 || 1
-            const limit = bookCriteriaDto.limit || 5
-            const skip = (bookCriteriaDto.page - 1) * limit
-            const sort: any = {
-                [sortColumn]: sortOrder
-            }
-            // const minPrice = 1, maxPrice = 2;
+    // build query - stage
+    let queryConditions = {};
 
-            // build query - stage
-            let queryConditions = {}
+    //add condition delete
+    search["isDelete"] = false;
 
-            // Build price range query
-            // const priceCondition = {}
-            // if (minPrice) priceCondition['$gte'] = minPrice
-            // if (maxPrice) priceCondition['$lte'] =  maxPrice
+    // final query condition
+    queryConditions = {
+      ...search,
+    };
 
-            // 3. build date conditions
-            // const dateConditions = {}
-            // const startDate = new Date(), endDate = new Date() // ex lay input
-            // if (startDate) dateConditions['$gte'] = startDate;
-            // if (endDate) dateConditions['$lte'] = endDate;
+    // execution - find stage
+    const books: IBook[] = await Book.find(queryConditions)
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .lean();
 
-            
-            // final query condition 
-            // queryConditions = {
-            //     ...(dateConditions !== {} ? {createdAt: dateConditions} : {}),
-            //     ...(priceCondition !== {} ? {price: priceCondition} : {}),
-            //     ...search,
-            // }
+    const totalItem = await Book.countDocuments(queryConditions);
+    const totalPaged = Math.ceil(totalItem / limit);
+    const currentPage = bookCriteriaDto.page < 0 ? 1 : bookCriteriaDto.page;
 
-            //add condition delete
-            search['isDelete'] = false;
+    const pagedResponseBook: PagedResponseModel<IBook> = {
+      currentPage: currentPage,
+      totalItems: totalItem,
+      totalPages: totalPaged,
+      items: books,
+      search: search,
+      sortOrder: sortOrder,
+      sortColumn: sortColumn,
+      limit: limit,
+      page: bookCriteriaDto.page,
+    };
 
-            // final query condition 
-            queryConditions = {
-                ...search
-            }
+    return pagedResponseBook;
+  }
 
-            // execution - find stage
-            const books: IBook[] = await Book.find(queryConditions)
-                .skip(skip)
-                .limit(limit)
-                .sort(sort)
-                .lean()
-            
-            const totalItem = await Book.countDocuments(queryConditions)
-            const totalPaged = Math.ceil(totalItem / limit)
-            const currentPage = (bookCriteriaDto.page < 0) ? 1 : bookCriteriaDto.page
+  async getBookById(id: string): Promise<BookDto> {
+    try {
+      console.log("id" + id);
+      const bookDto1 = Book.findById(id).then((book: IBook) => {
+        const bookDto: BookDto = mapper.map<IBook, BookDto>(
+          book,
+          "BookDto",
+          "IBook"
+        );
+        console.log(bookDto);
+        return bookDto;
+      });
 
-            const pagedResponseBook: PagedResponseModel<IBook> = {
-                currentPage: currentPage,
-                totalItems: totalItem,
-                totalPages: totalPaged,
-                items: books,
-                search: search,
-                sortOrder: sortOrder,
-                sortColumn: sortColumn,
-                limit: limit,
-                page: bookCriteriaDto.page
-            }
-            
-            return pagedResponseBook
+      if (bookDto1 === null) {
+        throw new Http400Error("The Book is not found");
+      }
+
+      return bookDto1;
+    } catch (err) {
+      console.error(err);
+      throw new APIError("Something wrong server");
     }
+  }
 
-    async getBookById(id: string): Promise<BookDto> {
-        try {
-            console.log("id"+id)
-            const bookDto1 = Book.findById(id).then((book: IBook) => {
-                const bookDto: BookDto = mapper.map<IBook, BookDto>(book, 'BookDto', 'IBook')
-                console.log(bookDto)
-                return bookDto;
-            });
+  async addBook(bookCreateDto: BookCreateDto) {
+    try {
+      const newBook = new Book({
+        title: bookCreateDto.title,
+        author: bookCreateDto.author,
+        category: bookCreateDto.category,
+        description: bookCreateDto.description,
+        price: bookCreateDto.price,
+        quantity: bookCreateDto.quantity,
+        image: bookCreateDto.image,
+        isDelete: false,
+      });
 
-            
-            if(bookDto1 === null) {
-                throw new Http400Error('The Book is not found')
-            }
+      const book = await newBook.save();
 
-            return bookDto1;
-        } catch (err) {
-            console.error(err)
-            throw new APIError('Something wrong server')
-        }
-    } 
+      if (book != null) {
+        return book;
+      }
 
-    async addBook(bookCreateDto:  BookCreateDto) {
-        try {
-            const newBook = new Book({
-                title: bookCreateDto.title,
-                author: bookCreateDto.author,
-                category: bookCreateDto.category,
-                description: bookCreateDto.description,
-                price: bookCreateDto.price,
-                quantity: bookCreateDto.quantity,
-                image: bookCreateDto.image,
-                isDelete: false
-            });
-    
-            const book = await newBook.save()
-    
-            if(book != null) {
-                return book
-            }
-    
-            return null;
-        } catch (err) {
-            console.log(err)
-            throw new APIError(err.message)
-        }
+      return null;
+    } catch (err) {
+      console.log(err);
+      throw new APIError(err.message);
     }
+  }
 
-    async updateBook(id: string, bookUpdateDto: BookUpdateDto) : Promise<IBook> {
-        try {
-            const option = { new: true };
-            const book = await Book.findByIdAndUpdate(id, bookUpdateDto, option);
+  async updateBook(id: string, bookUpdateDto: BookUpdateDto): Promise<IBook> {
+    try {
+      const option = { new: true };
+      const book = await Book.findByIdAndUpdate(id, bookUpdateDto, option);
 
-            if(book != null) {
-                return book;
-            }
+      if (book != null) {
+        return book;
+      }
 
-            return null;
-        } catch (err) {
-            console.log(err);
-            throw new APIError('Something wrong server');
-        }
+      return null;
+    } catch (err) {
+      console.log(err);
+      throw new APIError("Something wrong server");
     }
+  }
 
-    async deleteBook(id: string) : Promise<IBook>{
-        try {
-            const option = { new: true };
-            const book = await Book.findByIdAndUpdate(id, { $set: { isDelete: true } }, option);
+  async deleteBook(id: string): Promise<IBook> {
+    try {
+      const option = { new: true };
+      console.log(id);
+      const book = await Book.findByIdAndUpdate(
+        id,
+        { $set: { isDelete: true } },
+        option
+      );
 
-            if(book != null) {
-                return book;
-            }
+      if (book != null) {
+        return book;
+      }
 
-            return null;
-        } catch (err) {
-            console.log(err);
-            throw new APIError('Something wrong server')
-        }
+      return null;
+    } catch (err) {
+      console.log(err);
+      throw new APIError("Something wrong server");
     }
+  }
 }
 
-export default BookService
+export default BookService;

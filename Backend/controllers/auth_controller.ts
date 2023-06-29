@@ -1,28 +1,27 @@
-import { Request, Response} from 'express';
-import { StatusCodes } from 'http-status-codes';
+import APIError from "../error_handling/errors/http_400_error";
+import { Request, Response } from "express";
 
-import APIError from '../error_handling/errors/api_error'
-import { inject, injectable } from 'inversify';
-import TYPES from '../type';
-import { IAuthService } from '../interfaces/iauth_service';
-import AuthValidator from '../validators/auth_validator';
+import { inject, injectable } from "inversify";
+import TYPES from "../type";
+import { IAuthService } from "interfaces";
 
 @injectable()
 export class AuthController {
-    private _authService: IAuthService;
+  private _authService: IAuthService;
 
-    constructor(@inject(TYPES.IAuthService) authService: IAuthService) {
-        this._authService = authService;
-    }
+  constructor(@inject(TYPES.IAuthService) authService: IAuthService) {
+    this._authService = authService;
+  }
 
-    async loginUser(req: Request, res: Response) {
-        try {
-            const loginRequestDto = req.body;
-            return res.status(StatusCodes.OK).json(await this._authService.loginUser(loginRequestDto));
-        }
-        catch (err) {
-            console.log(err);
-            throw new APIError('Api Error');
-        }
+  async loginUser(req: Request, res: Response) {
+    try {
+      const loginRequestDto = req.body;
+      return res
+        .status(200)
+        .json(await this._authService.loginUser(loginRequestDto));
+    } catch (err) {
+      console.log(err);
+      throw new APIError("Api Error");
     }
+  }
 }

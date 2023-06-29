@@ -1,7 +1,5 @@
-import { AuthDto } from "../dtos/auth/auth_dto";
-
-import { LoginRequestDto } from "../dtos/auth/login_request_dto";
+import { AuthDto, LoginRequestDto } from "dtos";
 
 export interface IAuthService {
-    loginUser(loginRequestDto: LoginRequestDto) : Promise<AuthDto | undefined>;
+  loginUser(loginRequestDto: LoginRequestDto): Promise<AuthDto | undefined>;
 }
