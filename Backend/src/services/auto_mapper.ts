@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
 import { PojosMetadataMap } from "@automapper/pojos";
 import mongoose from "mongoose";
-import { IBook, IUser } from "models";
-import { BookDto, UserCreateDto } from "dtos";
+import { IBook, IUser } from "src/models";
+import { BookDto, UserCreateDto } from "../dtos";
 
 class AutoMapperService {
   mapperUserAndUserCreateDto() {

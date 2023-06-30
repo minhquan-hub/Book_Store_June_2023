@@ -9,8 +9,8 @@ import {
   BookDto,
   BookUpdateDto,
   PagedResponseModel,
-} from "dtos";
-import { IBookService } from "interfaces";
+} from "../dtos";
+import { IBookService } from "src/interfaces";
 import { IBook, Book } from "../models";
 
 @injectable()
@@ -126,7 +126,7 @@ class BookService implements IBookService {
       return null;
     } catch (err) {
       console.log(err);
-      throw new APIError(err.message);
+      throw new APIError("Something wrong server");
     }
   }
 

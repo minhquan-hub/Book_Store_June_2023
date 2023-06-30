@@ -2,8 +2,6 @@
   "compilerOptions": {
     "module": "commonjs",
 
-    "declaration": true,
-
     "removeComments": true,
 
     "emitDecoratorMetadata": true,
@@ -12,9 +10,7 @@
 
     "allowSyntheticDefaultImports": true,
 
-    "target": "es2017",
-
-    "sourceMap": true,
+    "target": "es2016",
 
     "outDir": "./dist",
 
@@ -38,10 +34,17 @@
 
     "moduleResolution": "node",
 
-    "types": ["reflect-metadata"]
-  },
+    "types": ["reflect-metadata"],
 
-  "ts-node": {
-    "esm": true
-  }
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "./typings"],
+  "exclude": [
+    "node_modules",
+    "bin",
+    "**/__mocks__*",
+    "**/*.spec.**",
+    "test",
+    "assets"
+  ]
 }

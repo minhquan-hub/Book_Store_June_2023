@@ -5,10 +5,10 @@ import { NextFunction, Request, Response } from "express";
 
 import app from "./app";
 import { container } from "./container";
-import "./controllers/user_controller";
-import "./controllers/auth_controller"; // remember
-import "./controllers/book_controller";
-import ApiError from "./error_handling/errors/api_error";
+import "./src/controllers/user_controller";
+import "./src/controllers/auth_controller"; // remember
+import "./src/controllers/book_controller";
+import ApiError from "./src/error_handling/errors/api_error";
 
 dotenv.config();
 const port = process.env.PORT || 5002;

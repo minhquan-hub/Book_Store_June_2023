@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 import APIError from "../error_handling/errors/api_error";
 
-import TYPES from "../type";
-import { IUserService } from "interfaces";
+import TYPES from "../../type";
+import { IUserService } from "src/interfaces";
 
 @injectable()
 export class UserController {
@@ -14,15 +14,14 @@ export class UserController {
     this._userService = userService;
   }
 
-  async postCreateUser(req: Request, res: Response) {
+  async postCreateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const userCreateDto = req.body;
-      console.log(userCreateDto);
+
       const user = await this._userService.createUser(userCreateDto);
       res.status(200).json(user);
     } catch (err) {
-      console.error(err);
-      throw new APIError("Api Error");
+      next(err);
     }
   }
 }

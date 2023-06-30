@@ -8,9 +8,9 @@ import {
 } from "@automapper/core";
 import { pojos } from "@automapper/pojos";
 
-import { UserCreateDto } from "../dtos/user/user_create_dto";
+import { UserCreateDto } from "../dtos";
 import { IUser } from "../models";
-import { UserProfile } from "../auto_mapper/user_profile";
+import { UserProfile } from "./user_profile";
 import AutoMapperService from "../services/auto_mapper";
 import { BookProfile } from "./book_profile";
 

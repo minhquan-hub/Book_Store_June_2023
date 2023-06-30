@@ -1,6 +1,6 @@
 import { createMap, createMapper, MappingProfile } from "@automapper/core";
-import { BookDto } from "../dtos/book/book_dto";
-import { IBook } from "models";
+import { BookDto } from "../dtos";
+import { IBook } from "src/models";
 
 export const BookProfile: MappingProfile = (mapper) => {
   createMap<IBook, BookDto>(mapper, "BookDto", "IBook");

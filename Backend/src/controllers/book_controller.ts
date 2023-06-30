@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 import {
@@ -7,10 +7,11 @@ import {
   BookDto,
   BookUpdateDto,
   PagedResponseModel,
-} from "dtos";
-import { IBookService } from "interfaces";
-import TYPES from "../type";
-import { IBook } from "models";
+} from "../dtos";
+import { IBookService } from "src/interfaces";
+import TYPES from "../../type";
+import { IBook } from "src/models";
+import { next } from "inversify-express-utils";
 
 @injectable()
 export class BookController {
@@ -20,7 +21,7 @@ export class BookController {
     this._bookService = bookService;
   }
 
-  async getBooks(req: Request, res: Response) {
+  async getBooks(req: Request, res: Response, next: NextFunction) {
     try {
       const bookCriteriaDto: BookCriteriaDto = {
         search: (req.query.search as string) || "",
@@ -34,21 +35,21 @@ export class BookController {
         await this._bookService.getBookList(bookCriteriaDto);
       return res.status(200).json(books);
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 
-  async getBookById(req: Request, res: Response) {
+  async getBookById(req: Request, res: Response, next: NextFunction) {
     try {
       const id: string = req.params.id;
       const book: BookDto = await this._bookService.getBookById(id);
       return res.status(200).json(book);
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 
-  async postBook(req: Request, res: Response) {
+  async postBook(req: Request, res: Response, next: NextFunction) {
     try {
       const bookCreateDto: BookCreateDto = {
         title: req.body.title,
@@ -64,11 +65,11 @@ export class BookController {
 
       return res.status(200).json(book);
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 
-  async putBook(req: Request, res: Response) {
+  async putBook(req: Request, res: Response, next: NextFunction) {
     try {
       const id: string = req.params.id;
       const bookUpdateDto: BookUpdateDto = {
@@ -85,17 +86,17 @@ export class BookController {
 
       return res.status(200).json(book);
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 
-  async deleteBook(req: Request, res: Response) {
+  async deleteBook(req: Request, res: Response, next: NextFunction) {
     try {
       const id: string = req.params.bookId;
       const book: IBook = await this._bookService.deleteBook(id);
       return res.status(200).json(book);
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 }

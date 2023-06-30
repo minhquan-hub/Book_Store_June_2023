@@ -3,8 +3,8 @@ import { inject, injectable } from "inversify";
 import { createMap, createMapper } from "@automapper/core";
 import { pojos } from "@automapper/pojos";
 
-import { IUserService } from "interfaces";
-import { UserCreateDto } from "dtos";
+import { IUserService } from "src/interfaces";
+import { UserCreateDto } from "../dtos";
 import { mapper } from "../auto_mapper/auto_mapper_profile";
 import { IUser, User } from "../models";
 import APIError from "../error_handling/errors/api_error";

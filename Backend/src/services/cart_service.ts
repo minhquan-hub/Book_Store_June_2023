@@ -1,5 +1,5 @@
 import { Cart } from "../models";
-import { CartCreateDto } from "../dtos/cart/cart_create_dto";
+import { CartCreateDto } from "../dtos";
 
 class CartService {
   constructor() {}

@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import { injectable } from "inversify";
 
 import { IUser, User } from "../models";
-import { AuthDto, LoginRequestDto } from "dtos";
-import { IAuthService } from "interfaces";
+import { AuthDto, LoginRequestDto } from "../dtos";
+import { IAuthService } from "src/interfaces";
 
 let authDto: AuthDto = {
   email: "",

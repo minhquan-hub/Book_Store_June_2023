@@ -4,8 +4,8 @@ import {
   BookDto,
   BookUpdateDto,
   PagedResponseModel,
-} from "dtos";
-import { Book, IBook } from "models";
+} from "../dtos";
+import { Book, IBook } from "src/models";
 
 export interface IBookService {
   getBookList(

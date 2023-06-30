@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import * as fs from "fs";
 import swaggerUi from "swagger-ui-express";
 
-import { cartRouter, authRouter, bookRouter, userRouter } from "./routes";
+import { cartRouter, authRouter, bookRouter, userRouter } from "./src/routes";
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use("/api/book", bookRouter);
 app.use("/api/user", userRouter);
 
 // Swagger
-const apiDocument = fs.readFileSync("./swagger/openapi.yaml", "utf8");
+const apiDocument = fs.readFileSync("./src/swagger/openapi.yaml", "utf8");
 const swaggerDocument = YAML.parse(apiDocument);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
