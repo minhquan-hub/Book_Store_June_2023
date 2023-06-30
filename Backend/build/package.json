@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "server.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "nodemon ./src/server.ts",
+    "start": "nodemon server.ts",
     "start:prod": "node server.ts"
   },
   "author": "Quan Tran",

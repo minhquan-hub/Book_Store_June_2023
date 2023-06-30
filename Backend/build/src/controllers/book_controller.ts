@@ -9,7 +9,7 @@ import {
   PagedResponseModel,
 } from "../dtos";
 import { IBookService } from "src/interfaces";
-import TYPES from "../type";
+import TYPES from "../../type";
 import { IBook } from "src/models";
 import { next } from "inversify-express-utils";
 

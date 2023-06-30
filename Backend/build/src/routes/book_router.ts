@@ -1,6 +1,6 @@
 import express from "express";
 
-import { container } from "../container";
+import { container } from "../../container";
 import { BookController } from "../controllers";
 import MiddlewareValidate from "../middlewares/middleware_validate";
 export const bookRouter = express.Router();

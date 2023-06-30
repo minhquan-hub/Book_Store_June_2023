@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import * as fs from "fs";
 import swaggerUi from "swagger-ui-express";
 
-import { cartRouter, authRouter, bookRouter, userRouter } from "./routes";
+import { cartRouter, authRouter, bookRouter, userRouter } from "./src/routes";
 
 const app = express();
 

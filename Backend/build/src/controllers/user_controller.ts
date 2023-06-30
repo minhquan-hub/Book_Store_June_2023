@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 
 import APIError from "../error_handling/errors/api_error";
 
-import TYPES from "../type";
+import TYPES from "../../type";
 import { IUserService } from "src/interfaces";
 
 @injectable()

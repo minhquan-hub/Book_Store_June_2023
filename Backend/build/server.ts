@@ -4,7 +4,11 @@ import mongoose, { MongooseOptions } from "mongoose";
 import { NextFunction, Request, Response } from "express";
 
 import app from "./app";
-import ApiError from "./error_handling/errors/api_error";
+import { container } from "./container";
+import "./src/controllers/user_controller";
+import "./src/controllers/auth_controller"; // remember
+import "./src/controllers/book_controller";
+import ApiError from "./src/error_handling/errors/api_error";
 
 dotenv.config();
 const port = process.env.PORT || 5002;

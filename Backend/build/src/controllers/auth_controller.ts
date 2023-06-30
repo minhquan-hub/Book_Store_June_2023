@@ -2,7 +2,7 @@ import APIError from "../error_handling/errors/http_400_error";
 import { NextFunction, Request, Response } from "express";
 
 import { inject, injectable } from "inversify";
-import TYPES from "../type";
+import TYPES from "../../type";
 import { IAuthService } from "src/interfaces";
 
 @injectable()
