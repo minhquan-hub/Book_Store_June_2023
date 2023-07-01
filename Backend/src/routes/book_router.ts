@@ -8,7 +8,7 @@ export const bookRouter = express.Router();
 const bookController = container.resolve<BookController>(BookController);
 
 bookRouter.get("/", bookController.getBooks.bind(bookController));
-bookRouter.get("/:id", bookController.getBookById.bind(bookController));
+bookRouter.get("/:bookId", bookController.getBookById.bind(bookController));
 bookRouter.post("/", bookController.postBook.bind(bookController));
 bookRouter.put("/:id", bookController.putBook.bind(bookController));
 bookRouter.delete("/:id", bookController.deleteBook.bind(bookController));

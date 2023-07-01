@@ -41,8 +41,9 @@ export class BookController {
 
   async getBookById(req: Request, res: Response, next: NextFunction) {
     try {
-      const id: string = req.params.id;
-      const book: BookDto = await this._bookService.getBookById(id);
+      const {bookId} = req.params;
+      console.log(bookId)
+      const book: BookDto = await this._bookService.getBookById(bookId);
       return res.status(200).json(book);
     } catch (err) {
       next(err);
