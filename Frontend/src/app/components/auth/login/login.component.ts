@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
       this.submitted = true;
       if (this.submitted) {
         this.authService.login(formData).subscribe((res: any) => {
+          console.log(res);
           this.cookieStorageService.saveDataUser(CookieKeyEnum.Email, res.email);
           this.cookieStorageService.saveDataUser(
             CookieKeyEnum.ROLE,

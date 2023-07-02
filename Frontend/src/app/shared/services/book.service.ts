@@ -11,22 +11,27 @@ export class BookService {
   constructor(private http: HttpClient, private cookieStorageService: CookieStorageService) {}
 
   public getAllBooks(): Observable<any> {
-    return this.http.get(environment.book.getAllBook);
+    const pathUrl = environment.book.getAllBook;
+    return this.http.get<any>(pathUrl);
   }
 
   public getBookById(id: string): Observable<any> {
-    return this.http.get(environment.book.updateBook, this.cookieStorageService.addToken());
+    const pathUrl = `${environment.book.getBookById}/${id}`;
+    return this.http.get(pathUrl, this.cookieStorageService.addToken());
   }
 
   public createBook(data: any): Observable<any> {
-    return this.http.post('/book',data,this.cookieStorageService.addToken());
+    const pathUrl = environment.book.createBook;
+    return this.http.post(pathUrl, data, this.cookieStorageService.addToken());
   }
 
   public updateBook(id: string, data: any): Observable<any> {
-    return this.http.put(`/book/${id}`, data, this.cookieStorageService.addToken());
+    const pathUrl = `${environment.book.updateBook}/${id}`;
+    return this.http.put(pathUrl, data, this.cookieStorageService.addToken());
   }
 
   public deleteBook(id: string): Observable<any> {
-    return this.http.delete(`/book/${id}`, this.cookieStorageService.addToken());
+    const pathUrl = `${environment.book.deleteBook}/${id}`;
+    return this.http.delete(pathUrl, this.cookieStorageService.addToken());
   }
 }

@@ -27,7 +27,7 @@ export class BookController {
         search: (req.query.search as string) || "",
         sortOrder: parseInt(req.query.sortOrder as string) || 1,
         sortColumn: (req.query.sortColumn as string) || "title",
-        limit: parseInt(req.query.limit as string) || 5,
+        limit: parseInt(req.query.limit as string) || 8,
         page: parseInt(req.query.page as string) || 1,
       };
 
@@ -42,7 +42,6 @@ export class BookController {
   async getBookById(req: Request, res: Response, next: NextFunction) {
     try {
       const {bookId} = req.params;
-      console.log(bookId)
       const book: BookDto = await this._bookService.getBookById(bookId);
       return res.status(200).json(book);
     } catch (err) {

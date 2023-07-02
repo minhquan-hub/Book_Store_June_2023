@@ -25,9 +25,12 @@ class UserService implements IUserService {
       );
       newUser.password = hashed;
 
+      console.log(newUser);
+
       const user: IUser = await User.create(newUser);
       return user;
     } catch (error) {
+        console.log(error);
       throw new APIError("Something wrong server");
     }
   }

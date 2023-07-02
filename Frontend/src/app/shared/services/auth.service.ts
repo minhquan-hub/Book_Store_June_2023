@@ -11,10 +11,12 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public register(data: any): Observable<any> {
-    return this.http.get(environment.auth.register, data);
+    const pathUrl = environment.user.register;
+    return this.http.post<any>(pathUrl, data);
   }
 
   public login(data: any): Observable<any> {
-    return this.http.get(environment.auth.login, data);
+    const pathUrl = environment.auth.login;
+    return this.http.post<any>(pathUrl, data);
   }
 }

@@ -14,7 +14,7 @@ export class GetAllBookComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookService.getAllBooks().subscribe((res: any) => {
-      this.books = res
+      this.books = res.items
     })
   }
 
