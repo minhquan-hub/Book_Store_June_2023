@@ -1,0 +1,33 @@
+<div class="form-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-bar">
+                    <div class="form-bar-tablecell">
+                        <h3>Login</h3>
+                        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                            <div class="form-group mt-2">
+                                <input type="email" formControlName="email" placeholder="Enter email">
+                                <div *ngIf="loginForm.get('email')?.errors">
+                                    <span class="text-danger">{{emailErrorMessage}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group mt-2">
+                                <input type="password" formControlName="password" placeholder="Enter password">
+                                <div *ngIf="loginForm.get('password')?.errors">
+                                    <span class="text-danger">{{passwordErrorMessage}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group mt-2">
+                                <a routerLink="/register">Register</a>
+                            </div>
+                            <div class="form-group mt-2">
+                                <button type="submit" class="form-button">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

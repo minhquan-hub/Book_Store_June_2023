@@ -1,0 +1,27 @@
+.show-bottom {
+    margin-bottom: 60px;
+}
+
+.image-size {
+    height: 250px;
+}
+
+.product-body {
+    background-color: #343a40;
+}
+
+.card-title {
+    color: #fff;
+    font-size: 25px;
+}
+
+.card-text,
+.price {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.author {
+    color: #F28123;
+}
