@@ -4,16 +4,14 @@ import * as CryptoJS from 'crypto-js';
 import { HttpHeaders } from '@angular/common/http';
 import { CookieKeyEnum } from '../enum/cookie-key-enum';
 
-const secretKey = "JH67hjqiu234gvcHYTFhgdf67834DSB"
+const secretKey = 'JH67hjqiu234gvcHYTFhgdf67834DSB';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CookieStorageService {
-
   constructor(private cookieService: CookieService) {}
 
   saveDataUser(key: string, data: string): void {
-
     const encryptedData = CryptoJS.AES.encrypt(data, secretKey).toString();
 
     const expirationDate = new Date();
@@ -30,7 +28,9 @@ export class CookieStorageService {
 
   getDataUser(key: string): string {
     const data = this.cookieService.get(key);
-    const decryptedData = CryptoJS.AES.decrypt(data, secretKey).toString(CryptoJS.enc.Utf8);
+    const decryptedData = CryptoJS.AES.decrypt(data, secretKey).toString(
+      CryptoJS.enc.Utf8
+    );
 
     return decryptedData;
   }
@@ -39,8 +39,11 @@ export class CookieStorageService {
     this.cookieService.deleteAll();
   }
 
-  public addToken() {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${this.getDataUser(CookieKeyEnum.TOKEN)}`); // may be localStorage/sessionStorage
+  public getToken() {
+    const header = new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${this.getDataUser(CookieKeyEnum.TOKEN)}`
+    ); // may be localStorage/sessionStorage
     return { headers: header };
   }
 }

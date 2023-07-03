@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
-import { AuthService } from '../../../shared/services/auth.service'
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -23,14 +23,16 @@ export class RegisterComponent implements OnInit {
       password: new FormControl('', [Validators.required]),
       phone: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^-?(0|[1-9]\d*)?$/),
+        Validators.pattern(/^-?([0-9]\d*)?$/),
+        Validators.minLength(10),
+        Validators.maxLength(10),
       ]),
       role: new FormControl('User'),
-    })
+    });
   }
 
   onRegister() {
-    this.validateForm()
+    this.validateForm();
 
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
@@ -39,7 +41,7 @@ export class RegisterComponent implements OnInit {
         this.authService.register(formData).subscribe((res: any) => {
           alert('Create User Successful');
           this.router.navigate(['/login']);
-        })
+        });
       }
     }
   }
@@ -67,6 +69,10 @@ export class RegisterComponent implements OnInit {
 
     if (phoneForm?.hasError('pattern')) {
       this.phoneErrorMessage = 'Please provide a valid phone number';
+    }
+
+    if (phoneForm?.hasError('minlength') || phoneForm?.hasError('maxlength')) {
+      this.phoneErrorMessage = 'The Phone number length is 10 characters';
     }
   }
 }

@@ -82,14 +82,12 @@ class BookService implements IBookService {
 
   async getBookById(id: string): Promise<BookDto> {
     try {
-      console.log("id" + id);
       const bookDto1 = Book.findById(id).then((book: IBook) => {
         const bookDto: BookDto = mapper.map<IBook, BookDto>(
           book,
           "BookDto",
           "IBook"
         );
-        console.log(bookDto);
         return bookDto;
       });
 
@@ -149,7 +147,6 @@ class BookService implements IBookService {
   async deleteBook(id: string): Promise<IBook> {
     try {
       const option = { new: true };
-      console.log(id);
       const book = await Book.findByIdAndUpdate(
         id,
         { $set: { isDelete: true } },
