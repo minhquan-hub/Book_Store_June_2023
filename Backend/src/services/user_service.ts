@@ -4,7 +4,7 @@ import { createMap, createMapper } from "@automapper/core";
 import { pojos } from "@automapper/pojos";
 
 import { IUserService } from "src/interfaces";
-import { UserCreateDto } from "../dtos";
+import { UserCreateDto, UserCreateResponseDto } from "../dtos";
 import { mapper } from "../auto_mapper/auto_mapper_profile";
 import { IUser, User } from "../models";
 import APIError from "../error_handling/errors/api_error";
@@ -13,7 +13,9 @@ import APIError from "../error_handling/errors/api_error";
 class UserService implements IUserService {
   constructor() {}
 
-  async createUser(userCreateDto: UserCreateDto) {
+  async createUser(
+    userCreateDto: UserCreateDto
+  ): Promise<UserCreateResponseDto> {
     try {
       const salt = await bcrypt.genSalt(10);
       const hashed = await bcrypt.hash(userCreateDto.password, salt);
@@ -26,8 +28,16 @@ class UserService implements IUserService {
       newUser.password = hashed;
 
       const user: IUser = await User.create(newUser);
-      return user;
+
+      const userCreateResponseDto: UserCreateResponseDto = {
+        id: user._id.toString(),
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      };
+      return userCreateResponseDto;
     } catch (error) {
+      console.log(error);
       throw new APIError("Something wrong server");
     }
   }

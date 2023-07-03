@@ -37,7 +37,7 @@ class BookService implements IBookService {
       : {};
     const sortColumn = bookCriteriaDto.sortColumn || "title";
     const sortOrder = bookCriteriaDto.sortOrder * 1 || 1;
-    const limit = bookCriteriaDto.limit || 5;
+    const limit = bookCriteriaDto.limit || 8;
     const skip = (bookCriteriaDto.page - 1) * limit;
     const sort: any = {
       [sortColumn]: sortOrder,
@@ -82,14 +82,12 @@ class BookService implements IBookService {
 
   async getBookById(id: string): Promise<BookDto> {
     try {
-      console.log("id" + id);
       const bookDto1 = Book.findById(id).then((book: IBook) => {
         const bookDto: BookDto = mapper.map<IBook, BookDto>(
           book,
           "BookDto",
           "IBook"
         );
-        console.log(bookDto);
         return bookDto;
       });
 
@@ -149,7 +147,6 @@ class BookService implements IBookService {
   async deleteBook(id: string): Promise<IBook> {
     try {
       const option = { new: true };
-      console.log(id);
       const book = await Book.findByIdAndUpdate(
         id,
         { $set: { isDelete: true } },
