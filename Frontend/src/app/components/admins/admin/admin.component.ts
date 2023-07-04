@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from '../../../shared/services/book.service';
 import { Book } from '../../../models/book.model';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -25,11 +26,14 @@ export class AdminComponent implements OnInit {
   loadData() {
     this.bookService
       .getAllBooks(this.currentPage, this.pageSize)
-      .subscribe((res: any) => {
-        this.books = res.items;
-        this.totalItems = res.totalItems;
-        this.totalPages = res.totalPages;
-      });
+      .pipe(
+        tap((res: any) => {
+          this.books = res.items;
+          this.totalItems = res.totalItems;
+          this.totalPages = res.totalPages;
+        })
+      )
+      .subscribe();
   }
 
   onPageChange(page: number) {
