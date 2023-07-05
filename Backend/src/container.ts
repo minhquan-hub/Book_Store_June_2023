@@ -8,10 +8,13 @@ import AuthService from "./services/auth_service";
 import BookService from "./services/book_service";
 import UserService from "./services/user_service";
 import TYPES from "./type";
+import { IKafkaService } from "./interfaces";
+import { KafkaService } from "./services";
 
 const container = new Container();
 container.bind<IUserService>(TYPES.IUserService).to(UserService);
 container.bind<IAuthService>(TYPES.IAuthService).to(AuthService);
 container.bind<IBookService>(TYPES.IBookService).to(BookService);
+container.bind<IKafkaService>(TYPES.IKafkaService).to(KafkaService);
 
 export { container };
