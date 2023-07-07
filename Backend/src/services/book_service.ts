@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 
 import Http400Error from "../error_handling/errors/http_400_error";
 import APIError from "../error_handling/errors/api_error";
@@ -10,12 +10,16 @@ import {
   BookUpdateDto,
   PagedResponseModel,
 } from "../dtos";
-import { IBookService } from "src/interfaces";
+import { IBookService, IKafkaService } from "src/interfaces";
 import { IBook, Book } from "../models";
+import TYPES from "../type";
 
 @injectable()
 class BookService implements IBookService {
-  constructor() {}
+  private _kafkaService: IKafkaService;
+  constructor(@inject(TYPES.IKafkaService) kafkaService: IKafkaService) {
+    this._kafkaService = kafkaService;
+  }
 
   /**
    *
@@ -82,7 +86,7 @@ class BookService implements IBookService {
 
   async getBookById(id: string): Promise<BookDto> {
     try {
-      const bookDto1 = Book.findById(id).then((book: IBook) => {
+      const bookDetailDto = Book.findById(id).then((book: IBook) => {
         const bookDto: BookDto = mapper.map<IBook, BookDto>(
           book,
           "BookDto",
@@ -91,11 +95,11 @@ class BookService implements IBookService {
         return bookDto;
       });
 
-      if (bookDto1 === null) {
+      if (bookDetailDto === null) {
         throw new Http400Error("The Book is not found");
       }
 
-      return bookDto1;
+      return bookDetailDto;
     } catch (err) {
       console.error(err);
       throw new APIError("Something wrong server");
@@ -118,6 +122,7 @@ class BookService implements IBookService {
       const book = await newBook.save();
 
       if (book != null) {
+        this._kafkaService.sendMessage("Create Book", book._id.toString());
         return book;
       }
 
@@ -134,6 +139,7 @@ class BookService implements IBookService {
       const book = await Book.findByIdAndUpdate(id, bookUpdateDto, option);
 
       if (book != null) {
+        this._kafkaService.sendMessage("Update Book", book._id.toString());
         return book;
       }
 
@@ -153,7 +159,10 @@ class BookService implements IBookService {
         option
       );
 
+    
+
       if (book != null) {
+        this._kafkaService.sendMessage("Delete Book", book._id.toString());
         return book;
       }
 

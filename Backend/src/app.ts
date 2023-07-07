@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import YAML from "yaml";
-import bodyParser from "body-parser";
 import * as fs from "fs";
 import swaggerUi from "swagger-ui-express";
 
