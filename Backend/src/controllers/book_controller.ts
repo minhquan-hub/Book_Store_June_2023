@@ -41,7 +41,7 @@ export class BookController {
 
   async getBookById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { bookId } = req.params;
+      const  { bookId }  = req.params;
       const book: BookDto = await this._bookService.getBookById(bookId);
       return res.status(200).json(book);
     } catch (err) {
@@ -71,7 +71,7 @@ export class BookController {
 
   async putBook(req: Request, res: Response, next: NextFunction) {
     try {
-      const id: string = req.params.id;
+        const { bookId } = req.params;
       const bookUpdateDto: BookUpdateDto = {
         title: req.body.title,
         author: req.body.author,
@@ -82,7 +82,7 @@ export class BookController {
         image: req.body.image,
       };
 
-      const book: IBook = await this._bookService.updateBook(id, bookUpdateDto);
+      const book: IBook = await this._bookService.updateBook(bookId, bookUpdateDto);
 
       return res.status(200).json(book);
     } catch (err) {
@@ -92,8 +92,8 @@ export class BookController {
 
   async deleteBook(req: Request, res: Response, next: NextFunction) {
     try {
-      const id: string = req.params.bookId;
-      const book: IBook = await this._bookService.deleteBook(id);
+      const { bookId } = req.params;
+      const book: IBook = await this._bookService.deleteBook(bookId);
       return res.status(200).json(book);
     } catch (err) {
       next(err);

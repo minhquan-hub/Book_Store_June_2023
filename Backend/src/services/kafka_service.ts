@@ -1,23 +1,28 @@
+import dotenv from "dotenv";
 import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
 import { injectable } from "inversify";
 import { Kafka, Producer } from "kafkajs";
 import { IKafkaService } from "src/interfaces/ikafka_service";
+dotenv.config();
 
 @injectable()
 export class KafkaService implements IKafkaService {
   private producer: Producer;
   private kafka: Kafka;
-  private clientId = "book-store";
-  private brokers = ["host.docker.internal:9093"];
-  private topic = "send-message-book-store";
+  private clientId = process.env.CLIENT_ID;
+  private brokers = [process.env.BROKER];
+  private topic = process.env.TOPIC;
 
   constructor() {
     this.kafka = new Kafka({ clientId: this.clientId, brokers: this.brokers });
     this.producer = this.kafka.producer();
+    this.connect();
   }
 
   connect() {
-    this.producer.connect();
+    this.producer.connect().then(() => {
+        console.log("Connected Kafka");
+    });
   }
 
   sendMessage(action: string, id: string) {

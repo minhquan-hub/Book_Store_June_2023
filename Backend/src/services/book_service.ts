@@ -12,7 +12,7 @@ import {
 } from "../dtos";
 import { IBookService, IKafkaService } from "src/interfaces";
 import { IBook, Book } from "../models";
-import TYPES from "src/type";
+import TYPES from "../type";
 
 @injectable()
 class BookService implements IBookService {
@@ -86,7 +86,7 @@ class BookService implements IBookService {
 
   async getBookById(id: string): Promise<BookDto> {
     try {
-      const bookDto1 = Book.findById(id).then((book: IBook) => {
+      const bookDetailDto = Book.findById(id).then((book: IBook) => {
         const bookDto: BookDto = mapper.map<IBook, BookDto>(
           book,
           "BookDto",
@@ -95,11 +95,11 @@ class BookService implements IBookService {
         return bookDto;
       });
 
-      if (bookDto1 === null) {
+      if (bookDetailDto === null) {
         throw new Http400Error("The Book is not found");
       }
 
-      return bookDto1;
+      return bookDetailDto;
     } catch (err) {
       console.error(err);
       throw new APIError("Something wrong server");
@@ -158,6 +158,8 @@ class BookService implements IBookService {
         { $set: { isDelete: true } },
         option
       );
+
+    
 
       if (book != null) {
         this._kafkaService.sendMessage("Delete Book", book._id.toString());

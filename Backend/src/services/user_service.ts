@@ -8,7 +8,7 @@ import { UserCreateDto, UserCreateResponseDto } from "../dtos";
 import { mapper } from "../auto_mapper/auto_mapper_profile";
 import { IUser, User } from "../models";
 import APIError from "../error_handling/errors/api_error";
-import TYPES from "src/type";
+import TYPES from "../type";
 
 @injectable()
 class UserService implements IUserService {
