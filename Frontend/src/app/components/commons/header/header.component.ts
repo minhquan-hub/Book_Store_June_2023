@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieStorageService } from '../../../shared/services/cookie-storage.service';
 import { CookieKeyEnum } from '../../../shared/enum/cookie-key-enum';
-
-const Email = 'email'
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  email = '';
 
   constructor(
-    private cookieStorageService: CookieStorageService
-  ) { }
+    private cookieStorageService: CookieStorageService,
+    private authService: AuthService,
+    private oidcSecurityService: OidcSecurityService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.oidcSecurityService
+      .checkAuth()
+      .subscribe(({ isAuthenticated, userData, accessToken }) => {
+        console.log('da dang nhap:', isAuthenticated);
+        this.email = userData.email;
+      });
   }
 
   isLogin() {
@@ -23,13 +32,19 @@ export class HeaderComponent implements OnInit {
   }
 
   isAdmin() {
-    const checkAdmin = this.cookieStorageService.getDataUser(CookieKeyEnum.ROLE)
-    if(checkAdmin == 'Admin') return true;
+    this.oidcSecurityService.getAccessToken();
+    const userData = this.oidcSecurityService.getUserData();
+    const checkAdmin = userData.resource_access['book-store'].roles[0];
+    if (checkAdmin === 'admin') return true;
     return false;
   }
 
-  onLogout() {
-    this.cookieStorageService.logOut();
+  onLogin() {
+    this.authService.loginKeycloak();
   }
 
+  onLogout() {
+    this.authService.logoutKeycloak();
+    this.cookieStorageService.logOut();
+  }
 }

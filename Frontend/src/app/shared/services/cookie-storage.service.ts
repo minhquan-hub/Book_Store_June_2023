@@ -3,13 +3,17 @@ import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import * as CryptoJS from 'crypto-js';
 import { HttpHeaders } from '@angular/common/http';
 import { CookieKeyEnum } from '../enum/cookie-key-enum';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 const secretKey = 'JH67hjqiu234gvcHYTFhgdf67834DSB';
 @Injectable({
   providedIn: 'root',
 })
 export class CookieStorageService {
-  constructor(private cookieService: CookieService) {}
+  constructor(
+    private cookieService: CookieService,
+    private oidcSecurityService: OidcSecurityService
+  ) {}
 
   saveDataUser(key: string, data: string): void {
     const encryptedData = CryptoJS.AES.encrypt(data, secretKey).toString();
@@ -42,7 +46,7 @@ export class CookieStorageService {
   public getToken() {
     const header = new HttpHeaders().set(
       'Authorization',
-      `Bearer ${this.getDataUser(CookieKeyEnum.TOKEN)}`
+      `Bearer ${this.oidcSecurityService.getAccessToken()}`
     ); // may be localStorage/sessionStorage
     return { headers: header };
   }
