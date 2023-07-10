@@ -8,6 +8,8 @@ import { AuthService } from './services/auth.service';
 import { CookieStorageService } from './services/cookie-storage.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BookService } from './services/book.service';
+import { LocalStorageService } from './services/local-storage.service';
+import { AbstractSecurityStorage } from 'angular-auth-oidc-client';
 
 @NgModule({
   declarations: [],
@@ -21,6 +23,13 @@ import { BookService } from './services/book.service';
     }),
     RouterModule,
   ],
-  providers: [CookieStorageService, MockService, AuthService, BookService],
+  providers: [
+    CookieStorageService,
+    MockService,
+    AuthService,
+    BookService,
+    LocalStorageService,
+    { provide: AbstractSecurityStorage, useClass: LocalStorageService },
+  ],
 })
 export class SharedModule {}

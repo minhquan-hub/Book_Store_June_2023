@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Book } from 'src/app/models/book.model';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,9 @@ import { Book } from 'src/app/models/book.model';
 export class BookService {
   constructor(
     private http: HttpClient,
-    private cookieStorageService: CookieStorageService
+    private cookieStorageService: CookieStorageService,
+    private oidcSecurityService: OidcSecurityService,
+    private localStorageService: LocalStorageService
   ) {}
 
   public getAllBooks(page: number, limit: number): Observable<any> {

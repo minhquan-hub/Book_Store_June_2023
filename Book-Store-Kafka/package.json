@@ -1,0 +1,16 @@
+{
+    "name": "book-store-kafka",
+    "version": "1.0.0",
+    "description": "kafka",
+    "main": "index.js",
+    "scripts": {
+        "start": "node consumer.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "quan-tran",
+    "license": "ISC",
+    "dependencies": {
+        "@kafkajs/confluent-schema-registry": "^3.3.0",
+        "kafkajs": "^2.2.4"
+    }
+}

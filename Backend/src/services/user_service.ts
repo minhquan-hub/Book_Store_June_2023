@@ -3,15 +3,20 @@ import { inject, injectable } from "inversify";
 import { createMap, createMapper } from "@automapper/core";
 import { pojos } from "@automapper/pojos";
 
-import { IUserService } from "src/interfaces";
+import { IKafkaService, IUserService } from "src/interfaces";
 import { UserCreateDto, UserCreateResponseDto } from "../dtos";
 import { mapper } from "../auto_mapper/auto_mapper_profile";
 import { IUser, User } from "../models";
 import APIError from "../error_handling/errors/api_error";
+import TYPES from "../type";
 
 @injectable()
 class UserService implements IUserService {
-  constructor() {}
+  private _kafkaService: IKafkaService;
+
+  constructor(@inject(TYPES.IKafkaService) kafkaService: IKafkaService) {
+    this._kafkaService = kafkaService;
+  }
 
   async createUser(
     userCreateDto: UserCreateDto
@@ -28,6 +33,10 @@ class UserService implements IUserService {
       newUser.password = hashed;
 
       const user: IUser = await User.create(newUser);
+
+      if (user != null) {
+        this._kafkaService.sendMessage("Create User", user._id.toString());
+      }
 
       const userCreateResponseDto: UserCreateResponseDto = {
         id: user._id.toString(),
